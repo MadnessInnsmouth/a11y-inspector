@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile-Friendly Accessibility Audit PWA</title>
+
+    <link rel="icon" href="icons/favicon.ico" sizes="any">
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0056b3"> <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="A11y Audit">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>A11y Audit PWA</h1>
+        <p>Mobile-friendly accessibility auditing powered by axe-core.</p>
+    </header>
+
+    <main>
+        <section id="input-section" class="card">
+            <h2>Audit a Web Page or HTML</h2>
+            <div class="input-group">
+                <label for="url-input">Enter URL:</label>
+                <input type="url" id="url-input" placeholder="e.g., https://www.example.com" aria-label="Enter the URL of the page to audit">
+            </div>
+            <div class="input-group">
+                <label for="html-input">Or paste HTML:</label>
+                <textarea id="html-input" rows="10" placeholder="Paste your HTML content here..." aria-label="Paste HTML content to audit"></textarea>
+            </div>
+            <button id="run-audit-btn" aria-label="Run accessibility audit">Run Audit</button>
+        </section>
+
+        <section id="results-section" class="card" aria-live="polite">
+            <h2>Audit Results</h2>
+            <div id="loading-indicator" class="hidden" aria-hidden="true">
+                <p>Running audit... Please wait.</p>
+                <div class="spinner"></div>
+            </div>
+            <div id="audit-summary" class="hidden">
+                <p><strong>Total Violations:</strong> <span id="violation-count">0</span></p>
+                <p><strong>Impact Breakdown:</strong></p>
+                <ul id="impact-breakdown">
+                    </ul>
+            </div>
+            <div id="violations-list">
+                <p id="no-violations-message" class="hidden">No accessibility violations found. Great job!</p>
+            </div>
+        </section>
+
+        <section id="history-section" class="card">
+            <h2>Audit History</h2>
+            <ul id="audit-history-list">
+                <li class="no-history-message">No past audits yet.</li>
+                </ul>
+            <div id="history-actions" class="hidden">
+                <button id="export-json-btn">Export JSON</button>
+                <button id="export-csv-btn">Export CSV</button>
+                <button id="clear-history-btn">Clear History</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 A11y Audit PWA. Powered by <a href="https://www.deque.com/axe/" target="_blank" rel="noopener noreferrer">axe-core</a>.</p>
+    </footer>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
