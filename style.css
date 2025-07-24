@@ -1,0 +1,611 @@
+/* Basic Reset & Box-Sizing */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    /* Color Variables */
+    --primary-color: #0056b3; /* A deep blue for primary actions */
+    --secondary-color: #6c757d; /* A subtle grey for secondary elements */
+    --background-color: #f4f7f6; /* Light background */
+    --card-background: #ffffff; /* White cards */
+    --text-color: #333; /* Dark grey for general text */
+    --border-color: #ddd; /* Light border for cards and inputs */
+    --shadow-color: rgba(0, 0, 0, 0.1);
+
+    /* Status Colors */
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --error-color: #dc3545; /* Red for errors/violations */
+    --info-color: #17a2b8; /* For less critical information */
+
+    /* Accessibility High Contrast Colors (to be potentially toggled by JS) */
+    --high-contrast-bg: #000;
+    --high-contrast-text: #fff;
+    --high-contrast-border: #fff;
+    --high-contrast-card-bg: #333;
+    --high-contrast-button-bg: #555;
+    --high-contrast-input-bg: #444;
+}
+
+/* Base Body Styles */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-size: 16px; /* Base font size */
+    -webkit-text-size-adjust: 100%; /* Prevent text zoom issues on mobile */
+}
+
+/* Global Focus Styles for Accessibility */
+*:focus-visible {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 2px;
+    border-radius: 3px; /* So outline doesn't look rectangular on round elements */
+}
+
+/* Header */
+header {
+    background-color: var(--primary-color);
+    color: #fff;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+header p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+/* Main Content Area */
+main {
+    flex-grow: 1;
+    max-width: 900px; /* Constrain content width for readability */
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 0.5rem; /* Small horizontal padding for very small screens */
+}
+
+/* Card Styling */
+.card {
+    background-color: var(--card-background);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.card h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+/* Input Groups */
+.input-group {
+    margin-bottom: 1rem;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: var(--text-color);
+    font-size: 1.05rem;
+}
+
+.input-group input[type="url"],
+.input-group textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    background-color: var(--card-background); /* Ensures consistent background */
+    color: var(--text-color);
+}
+
+.input-group input[type="url"]:focus,
+.input-group textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.25); /* Primary color with transparency */
+    outline: none; /* Handled by :focus-visible */
+}
+
+/* Buttons */
+button {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+    margin-top: 0.5rem;
+    display: inline-block; /* For consistent padding/margin */
+}
+
+button:hover {
+    background-color: #004494; /* Slightly darker primary color */
+}
+
+button:active {
+    transform: translateY(1px); /* Little press effect */
+}
+
+button:disabled {
+    background-color: var(--secondary-color);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Loading Indicator */
+#loading-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 1.5rem;
+    color: var(--text-color);
+}
+
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: var(--primary-color);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Audit Results Section */
+#audit-summary {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #e9ecef; /* Light grey background */
+    border-left: 5px solid var(--primary-color);
+    border-radius: 5px;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+}
+
+#audit-summary p {
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+#audit-summary strong {
+    color: var(--primary-color);
+}
+
+#impact-breakdown {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 0.5rem;
+}
+
+#impact-breakdown li {
+    margin-bottom: 0.3rem;
+    font-size: 0.95rem;
+}
+
+#violations-list {
+    margin-top: 1rem;
+}
+
+.violation-item {
+    background-color: #fff6f6; /* Very light red for violations */
+    border: 1px solid var(--error-color);
+    border-left: 5px solid var(--error-color);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    position: relative;
+    padding-right: 3rem; /* Space for expand button */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.violation-item h3 {
+    color: var(--error-color);
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.violation-item p {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    color: var(--text-color);
+}
+
+.violation-details {
+    margin-top: 0.8rem;
+    padding-top: 0.8rem;
+    border-top: 1px dashed var(--border-color);
+    display: none; /* Hidden by default */
+}
+
+.violation-details p {
+    margin-bottom: 0.4rem;
+    font-size: 0.9rem;
+}
+
+.violation-details strong {
+    color: var(--primary-color);
+}
+
+.violation-details ul {
+    list-style: inside disc;
+    margin-left: 1rem;
+    margin-top: 0.5rem;
+    padding-left: 0;
+}
+
+.violation-details ul li {
+    margin-bottom: 0.2rem;
+    line-height: 1.4;
+}
+
+.violation-details code {
+    background-color: #eef;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: monospace;
+    white-space: pre-wrap; /* Allows long lines to wrap */
+    word-break: break-all; /* Breaks long words if necessary */
+    display: block; /* Ensures it takes full width for easier copying */
+    margin-top: 0.5rem;
+    border: 1px solid #dde;
+}
+
+.violation-item .expand-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem; /* Larger for touch targets */
+    color: var(--primary-color);
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    width: 44px; /* Minimum touch target size */
+    height: 44px; /* Minimum touch target size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; /* Make it round */
+    transition: background-color 0.2s ease;
+}
+
+.violation-item .expand-btn:hover {
+    background-color: rgba(0, 86, 179, 0.1); /* Light hover effect */
+}
+
+/* Plus/Minus icon for expand/collapse button */
+.violation-item .expand-btn::after {
+    content: '⊕'; /* Circle Plus */
+    font-size: 1.2em;
+    display: block;
+    line-height: 1;
+}
+
+.violation-item.expanded .expand-btn::after {
+    content: '⊖'; /* Circle Minus */
+}
+
+/* Accessibility for different impact levels */
+.impact-critical { color: var(--error-color); font-weight: bold; }
+.impact-serious { color: #e67e22; /* A deeper orange */ font-weight: bold; }
+.impact-moderate { color: var(--warning-color); font-weight: bold; } /* Changed to bold for better visibility */
+.impact-minor { color: var(--info-color); }
+.impact-none { color: var(--success-color); } /* For passed checks */
+
+
+#no-violations-message {
+    padding: 1rem;
+    background-color: var(--success-color);
+    color: white;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 1rem;
+}
+
+/* Audit History Section */
+#audit-history-list {
+    list-style: none;
+    padding: 0;
+}
+
+#audit-history-list li {
+    background-color: #f8f9fa; /* Light grey */
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.8rem;
+    display: flex;
+    flex-direction: column; /* Stack on smaller screens */
+    justify-content: space-between;
+    align-items: flex-start; /* Align items to the start on new line */
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+#audit-history-list li:hover {
+    background-color: #e9ecef;
+}
+
+#audit-history-list li strong {
+    color: var(--primary-color);
+    margin-bottom: 0.2rem; /* Spacing between URL and timestamp */
+}
+
+#audit-history-list li span:last-child {
+    font-weight: bold;
+    margin-top: 0.4rem; /* Spacing for violations count */
+}
+
+.no-history-message {
+    text-align: center;
+    color: var(--secondary-color);
+    padding: 1rem;
+    font-style: italic;
+}
+
+#history-actions {
+    display: flex;
+    flex-wrap: wrap; /* Allow buttons to wrap */
+    gap: 0.5rem; /* Space between buttons */
+    margin-top: 1rem;
+    justify-content: flex-end; /* Align buttons to the right */
+}
+
+#history-actions button {
+    margin-top: 0; /* Override default button margin */
+}
+
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 2rem;
+    padding: 1rem;
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+}
+
+footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: text-decoration 0.2s ease;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    body {
+        padding: 0.8rem;
+    }
+
+    header {
+        padding: 1rem 0.8rem;
+        margin-bottom: 1rem;
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+    }
+
+    header p {
+        font-size: 1rem;
+    }
+
+    .card {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .card h2 {
+        font-size: 1.4rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .input-group label {
+        font-size: 1rem;
+    }
+
+    button {
+        width: 100%; /* Full width buttons on small screens */
+        margin-top: 0.8rem;
+    }
+
+    #history-actions {
+        flex-direction: column; /* Stack history buttons */
+        align-items: stretch; /* Stretch buttons to full width */
+    }
+
+    #history-actions button {
+        margin-bottom: 0.5rem;
+    }
+
+    .violation-item {
+        padding-right: 1rem; /* Adjust for smaller screens */
+    }
+
+    .violation-item .expand-btn {
+        top: 0.5rem; /* Adjust position */
+        right: 0.5rem;
+        width: 38px; /* Slightly smaller touch target but still good */
+        height: 38px;
+        font-size: 1.3rem;
+    }
+
+    #audit-history-list li {
+        flex-direction: column; /* Stack history items content */
+        align-items: flex-start;
+        padding: 0.7rem 0.8rem;
+    }
+
+    #audit-history-list li span:last-child {
+        margin-top: 0.3rem; /* Adjust spacing */
+    }
+}
+
+/* High Contrast Mode (Conceptual - to be activated by JS if desired) */
+body.high-contrast {
+    background-color: var(--high-contrast-bg);
+    color: var(--high-contrast-text);
+}
+
+body.high-contrast header {
+    background-color: var(--high-contrast-bg);
+    border: 1px solid var(--high-contrast-text);
+    box-shadow: none;
+}
+
+body.high-contrast header h1,
+body.high-contrast header p {
+    color: var(--high-contrast-text);
+}
+
+body.high-contrast .card {
+    background-color: var(--high-contrast-card-bg);
+    border: 1px solid var(--high-contrast-border);
+    box-shadow: none;
+}
+
+body.high-contrast .card h2 {
+    color: var(--high-contrast-text);
+    border-color: var(--high-contrast-border);
+}
+
+body.high-contrast .input-group label {
+    color: var(--high-contrast-text);
+}
+
+body.high-contrast .input-group input[type="url"],
+body.high-contrast .input-group textarea {
+    background-color: var(--high-contrast-input-bg);
+    color: var(--high-contrast-text);
+    border-color: var(--high-contrast-border);
+}
+
+body.high-contrast .input-group input[type="url"]:focus,
+body.high-contrast .input-group textarea:focus {
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+    border-color: var(--high-contrast-text);
+}
+
+body.high-contrast button {
+    background-color: var(--high-contrast-button-bg);
+    color: var(--high-contrast-text);
+    border: 1px solid var(--high-contrast-text);
+}
+
+body.high-contrast button:hover,
+body.high-contrast button:focus {
+    background-color: #666; /* A slightly different high-contrast hover */
+    color: var(--high-contrast-text);
+}
+
+body.high-contrast .spinner {
+    border-left-color: var(--high-contrast-text);
+}
+
+body.high-contrast #audit-summary {
+    background-color: var(--high-contrast-card-bg);
+    border-left-color: var(--high-contrast-border);
+    color: var(--high-contrast-text);
+}
+
+body.high-contrast #audit-summary strong {
+    color: var(--high-contrast-text);
+}
+
+body.high-contrast .violation-item {
+    background-color: #660000; /* Darker red for violations in HC */
+    border-color: #ff0000;
+}
+
+body.high-contrast .violation-item h3 {
+    color: #ff0000;
+}
+
+body.high-contrast .violation-details {
+    border-color: var(--high-contrast-border);
+}
+
+body.high-contrast .violation-details code {
+    background-color: #222;
+    color: #fff;
+    border-color: #444;
+}
+
+body.high-contrast .violation-item .expand-btn {
+    color: var(--high-contrast-text);
+}
+
+body.high-contrast .impact-critical { color: #ff0000; }
+body.high-contrast .impact-serious { color: #ff9900; } /* Brighter orange */
+body.high-contrast .impact-moderate { color: #ffff00; } /* Yellow */
+body.high-contrast .impact-minor { color: #00ff00; } /* Green */
+
+body.high-contrast #no-violations-message {
+    background-color: #006400; /* Dark green */
+    color: var(--high-contrast-text);
+    border: 1px solid var(--high-contrast-text);
+}
+
+body.high-contrast #audit-history-list li {
+    background-color: var(--high-contrast-input-bg);
+    border-color: var(--high-contrast-border);
+    color: var(--high-contrast-text);
+}
+
+body.high-contrast #audit-history-list li strong {
+    color: var(--high-contrast-text);
+}
+
+body.high-contrast footer {
+    color: var(--high-contrast-text);
+}
+
+body.high-contrast footer a {
+    color: var(--high-contrast-text);
+}
